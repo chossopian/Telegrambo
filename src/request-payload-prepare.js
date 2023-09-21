@@ -7,7 +7,16 @@ const JSON_PROPS = new Set([
   'suggested_tip_amounts', 'provider_data', 'shipping_options'
 ]);
 
-
+/**
+ * Takes in a payload object, a set of properties, and a handler function.
+ * Returns a new object with the properties in the payload object that are also in the set of properties and 
+ * their corresponding values transformed by the handler function.
+ *
+ * @param {Object} payload - The payload object.
+ * @param {Set} props - A set of properties.
+ * @param {Function} handler - The handler function that transforms the values.
+ * @return {Object} - The new object with the transformed values.
+ */
 function prepare(payload, props, handler) {
   const result = {...payload};
   for (let prop in result)
@@ -17,12 +26,18 @@ function prepare(payload, props, handler) {
     return result;
 }
 
-
 const jsonify = (payload) => prepare(payload, JSON_PROPS, JSON.stringify);
 const stringify = (payload) => prepare(payload, STRING_PROPS, String);
 
-
-export default function(requestPayload) {
+/**
+ * Prepares the request payload by creating a deep copy of the input object and then converting it to a JSON string.
+ *
+ * @param {object} requestPayload - The input request payload object.
+ * @return {string} - The JSON string representation of the modified request payload.
+ */
+function RequestPayloadPrepare(requestPayload) {
   const result = {...requestPayload};
   return jsonify( stringify(result) );
 }
+
+export default RequestPayloadPrepare;
