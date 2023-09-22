@@ -6,7 +6,7 @@ Telegrambo is a simple library for interacting with the [Telegram Bot API](https
 
 You can install Telegrambo using npm:
 
-`npm install telegrambo` or `npm install @headmad/telegrambo`
+`npm install telegrambo` or `npm install headmad/telegrambo`
 
 
 ## Usage
@@ -14,21 +14,24 @@ You can install Telegrambo using npm:
 <br>To use Telegrambo in your project, you can import it as a module:
 
 ```js
-// set webhook in ou server
 import bot from './bot.js';
 
 export default async function handler(request, response) {
+  // Listening webhook on POST-request
   if (request.method === 'POST') {
+
     // request.body must be a object
     const results = bot.process(request.body);
     console.log(results);
 
   // Set webhook if query-string of url have 'webhook':
   // https://my-syte.com?webhook
-  } else (request.method === 'GET' && 'webhook' in request.query) {
+  } else ('webhook' in request.query) {
+    
     bot.setWebhook({
       url: 'https://my-syte.com'
     });
+
   }
 
   return response.send('Ok');
@@ -49,7 +52,7 @@ bot.on('message', (ctx) => {
 });
 ```
 
-<br>List of events you can get from type [_Update_](https://core.telegram.org/bots/api#update) in official documentation. It can be any field except `update_id`. For example? lesten event `callback_query`:
+<br>List of events you can get from type [_Update_](https://core.telegram.org/bots/api#update) in official documentation. It can be any field except `update_id`. For example, listen event `callback_query`:
 
 ```js
 // bot.js
