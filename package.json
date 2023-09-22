@@ -1,7 +1,7 @@
 {
   "name": "telegambo",
   "version": "1.0.0",
-  "description": "Simple lib for telegram bot API",
+  "description": "Telegrambo is a simple library for interacting with the Telegram Bot API",
   "main": "index.js",
   "type": "module",
   "scripts": {
