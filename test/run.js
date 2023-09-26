@@ -1,7 +1,7 @@
 import bot from './bot.js';
 import './message.js';
 
-const result = bot.process({
+const apiRequest = {
   "update_id": 87654321,
   "message": {
    "message_id": 1,
@@ -21,6 +21,14 @@ const result = bot.process({
    "date": 1695627108,
    "text": "Hello, there!"
   }
- });
+ };
 
-console.log(result);
+const run = {
+  message: () => console.log(bot.process(apiRequest))
+};
+
+const runtype = process.argv[2];
+
+if (runtype && runtype in run) {
+  run[runtype]();
+}
