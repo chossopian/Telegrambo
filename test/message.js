@@ -1,9 +1,7 @@
 import bot from './bot.js';
 
-bot.on('message::text', (ctx) => {
+bot.on('message', (ctx) => {
   return ctx.sendMessage({
-    text: 'Hello'
+    text: ctx.message.text
   })
 });
-
-// export default bot;
