@@ -6,12 +6,12 @@ export default BotContext;
 /**
  * Creates a BotContext object that handles event handling and processing.
  *
- * @param {object} request - The request object.
+ * @param {requestSender} requestSender - Function that accepts a method and payload.
  * @param {object} params - Optional parameters.
  * @param {string} params.match_separator - The separator used for event matching. Default is '::'.
  * @return {object} The BotContext object.
  */
-function BotContext(request) {
+function BotContext(requestSender) {
   const EVENTS = new Map();
   const self = {};
 
@@ -62,7 +62,7 @@ function BotContext(request) {
   function runEventHandlers(trigger, eventName, eventPayload) {
     const result = [];
     if (EVENTS.has(trigger)) {
-      const eventContext = EventContext(request, eventName, eventPayload);
+      const eventContext = EventContext(requestSender, eventName, eventPayload);
       for (let handler of EVENTS.get(trigger))
         result.push(handler(eventContext, eventName));
     }
@@ -76,7 +76,7 @@ function BotContext(request) {
       if (prop in target)
         return target[prop];
 
-      return (requestPayload = {}) => request(prop, requestPayload);
+      return (requestPayload = {}) => requestSender(prop, requestPayload);
     },
 
     set(target, prop, value) {
@@ -91,3 +91,10 @@ function BotContext(request) {
     },
   });
 }
+
+/**
+ * @callback requestSender - Synchronous function that accepts a method and payload.
+ * @param {string} method - Telegram API method for the request.
+ * @param {object} payload - The payload to send with the request.
+ * @return {object} - The response from the Telegram API.
+ */

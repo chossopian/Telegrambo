@@ -43,9 +43,6 @@ const apiRequestMatch = {
     },
     "date": 123456789,
     "text": "/hello @username",
-    match: [
-      'hello', 'mee', 'as', 'me'
-    ],
     "entities": [
       {
         "offset": 0,
