@@ -1,4 +1,5 @@
 import EventContextPayload from './event-context-payload.js';
+import { EventContextError } from './errors.js';
 
 /**
  * Creates an instance of EventContext.
@@ -31,6 +32,16 @@ function EventContext(requestSender, eventName, eventPayload) {
         });
 
       return (requestPayload = {}) => requestSender(prop, { ...contextPayload, ...requestPayload });
+    },
+    set(target, prop, value) {
+      if (prop in target)
+        throw new EventContextError(`Can't rewrite method "${prop}" in event context`);
+
+      if (typeof value !== 'function')
+        throw new EventContextError(`New method "${prop}" must be a function`);
+
+      target[prop] = value;
+      return true;
     }
   });
 };

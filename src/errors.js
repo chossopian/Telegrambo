@@ -1,4 +1,10 @@
 
+export class EventContextError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'EventContextError';
+  }
+}
 export class BotContextError extends Error {
   constructor(message) {
     super(message);
