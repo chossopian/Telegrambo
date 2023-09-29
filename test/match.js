@@ -1,8 +1,14 @@
 import bot from './bot.js';
-import extensionMatch from '../extension/match.js';
+import onMatch from '../extensions/on-match.js';
+import update from './update/match.js';
 
-bot.match = extensionMatch(bot);
+bot.onMatch = onMatch(bot);
 
-bot.match('message::entities', (ctx, eventName, match) => {
-  console.log({match});
+
+
+bot.onMatch('message::entities::type::mention', (ctx, match) => {
+  console.log(match);
+
 });
+
+console.log(bot.process(update));

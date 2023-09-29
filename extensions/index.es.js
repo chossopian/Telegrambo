@@ -1,0 +1,1 @@
+import {default as onMatch} from './on-match.js';
