@@ -10,9 +10,24 @@ const bot = createNodeBot(process.env.YOUR_BOT_TOKEN);
 
 // Initialize new method
 bot.onMatch = onMatch(bot, '::');
+```
 
+Creates a callback function to handle a specific match.
+
+**Parameters:**
+
+- `bot` (BotContext ): The bot object.
+- `matchSeparator` (string, optional): The separator used to split the match string into an array. Defaults to `'::'`.
+
+**Returns:**
+
+- `function`: A callback function that handles the match.
+
+<br>Example of using:
+
+```js
 // If user send photo
-bot.onMatch('message::photo', (ctx) => {
+bot.onMatch('message::photo', (ctx, match, eventName) => {
   ctx.sendMessage({
     text: 'Great photo!'
   });
