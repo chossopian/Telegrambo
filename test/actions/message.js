@@ -1,7 +1,7 @@
 import bot from '../bot.js';
-import msg from '../updates/message.js';
+import update from '../updates/message.js';
 
-console.log(bot.process(msg));
+console.log(bot.process(update));
 
 bot.on('message', (ctx) => {
   return ctx.sendMessage({

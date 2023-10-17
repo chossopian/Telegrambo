@@ -1,5 +1,5 @@
-import bot from './bot.js';
-import update  from './update/message.js';
+import bot from '../bot.js';
+import update  from '../updates/message-hello.js';
 
 // Write function for creating new method
 function createOnTextMethod(bot) {
@@ -15,7 +15,7 @@ function createOnTextMethod(bot) {
 bot.onText = createOnTextMethod(bot);
 
 // Run new method
-bot.onText('Hello', (ctx) => {
+bot.onText('Hello!', (ctx) => {
   return ctx.sendMessage({
     text: 'Check Method OnText'
   });
