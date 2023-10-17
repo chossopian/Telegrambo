@@ -1,6 +1,14 @@
-export default extensionMatch;
+export default onMatch;
 
-function extensionMatch(bot, matchSeparator = '::') {
+
+/**
+ * Creates a callback function to handle a specific match.
+ *
+ * @param {object} bot - The bot instance.
+ * @param {string} matchSeparator - The separator used to split the match string into an array.
+ * @return {function} A callback function that handles the match.
+ */
+function onMatch(bot, matchSeparator = '::') {
   return function (matchString, matchHandler) {
 
     const matchChain = matchString.split(matchSeparator);
@@ -51,13 +59,14 @@ function checkMatchChein(matchChain, matchHandler) {
       } else if (regExpr.test(prop)) {
         const [_, pattern, flags] = prop.match(regExpr);
         const RE = new RegExp(pattern, flags);
-        if (!RE.test(match))
+        match = match.match(RE);
+        if (!match)
           return null;
 
       } else if (String(match) != prop) {
         return null;
       } // if match !== prop
     } // for prop in props
-    return matchHandler(eventContext, eventName, match);
+    return matchHandler(eventContext, match, eventName);
   };
 }

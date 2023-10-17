@@ -12,6 +12,10 @@
     "*": {
       "import": "./index.es.js",
       "require": "./index.umd.js"
+    },
+    "extensions": {
+      "import": "./extensions/index.es.js",
+      "require": "./extensions/index.umd.js"
     }
   },
   "scripts": {

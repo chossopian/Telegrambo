@@ -41,8 +41,8 @@ export default async function handler(request, response) {
 
 ```js
 // bot.js
-import Telegrambo from 'telegambo';
-const bot = Telegrambo(process.env.YOU_BOT_TOKEN);
+import {createNodeBot } from 'telegambo';
+const bot = createNodeBot(process.env.YOU_BOT_TOKEN);
 
 // Create echo-bot
 bot.on('message', (ctx) => {
@@ -102,6 +102,35 @@ bot.on((ctx, eventName) => {
 });
 ```
 <br>
+
+## Own methods
+
+<br>
+You can create own methods/ For example:
+
+```js
+import bot from './bot.js';
+
+// Write function for creating new method
+function createOnTextMethod(bot) {
+  return (matchText, handler) => {
+    bot.on('message', (ctx) => {
+      if (ctx.message.text === matchText)
+        return handler(ctx);
+      });
+  };
+};
+
+// Initialize new method onText
+bot.onText = createOnTextMethod(bot);
+
+// Run new method
+bot.onText('Hello', (ctx) => {
+  return ctx.sendMessage({
+    text: 'Hi there!'
+  });
+});
+```
 
 ## Event-filter 
 Also, you can use special filters of events:
