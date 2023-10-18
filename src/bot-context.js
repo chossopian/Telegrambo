@@ -40,7 +40,7 @@ function BotContext(requestSender) {
    * @param {object} eventPayload - The payload of the event.
    * @return {array} The list of handlers to be executed.
    */
-  self.process = (eventPayload) => {
+  self.applyUpdate = (eventPayload) => {
     const eventName = Object.keys(eventPayload).find(key => key !== 'update_id');
     const handlers = [
       ...runEventHandlers(eventName, eventName, eventPayload),
@@ -48,7 +48,6 @@ function BotContext(requestSender) {
     ];
     return handlers;
   };
-
   
 
   /**
