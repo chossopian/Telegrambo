@@ -21,4 +21,4 @@ bot.onText('Hello!', (ctx) => {
   });
 });
 
-console.log(bot.process(update));
+console.log(bot.setUpadte(update));

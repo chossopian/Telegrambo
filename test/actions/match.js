@@ -8,4 +8,4 @@ bot.match('message::entities', (ctx, eventName, match) => {
   console.log({match});
 });
 
-console.log(bot.process(update));
+console.log(bot.setUpadte(update));
