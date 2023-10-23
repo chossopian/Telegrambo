@@ -19,6 +19,7 @@
     }
   },
   "scripts": {
+    "example": "node example/tuporobot.js",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
@@ -36,5 +37,8 @@
   "homepage": "https://github.com/HeadMad/Telegrambo#readme",
   "devDependencies": {
     "vite": "^4.4.9"
+  },
+  "dependencies": {
+    "sync-request": "^6.1.0"
   }
 }

@@ -1,4 +1,4 @@
-import { request } from "https";
+import request from "sync-request";
 import RequestPayloadPrepare from "./request-payload-prepare.js";
 
 export default createRequestSender;
@@ -23,21 +23,27 @@ function createRequestSender(token) {
     const url = `https://api.telegram.org/bot${token}/${method}`;
     const preparedPayload = RequestPayloadPrepare(payload);
 
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    };
-
-    // Create a request object
-    const req = request(url, options);
-
-    // Send the request synchronously
-    req.write(JSON.stringify(preparedPayload));
-    const response = req.end();
-
-    return JSON.parse(response.body);
+    const res = request('POST', url, {
+      json: preparedPayload,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  
+    if (res.statusCode === 200) {
+      return JSON.parse(res.getBody('utf8'));
+    } else {
+      throw new Error(`Error sending POST request. Status code: ${res.statusCode}`);
+    }
   }
 }
+
+
+
+
+
+
+
 
 
 

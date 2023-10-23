@@ -22,7 +22,6 @@ function BotContext(requestSender) {
    * @param {function} eventHandler - The handler function to attach.
    */
   self.on = (eventName, eventHandler) => {
-
     if (typeof eventName === 'function') {
       eventHandler = eventName;
       eventName = null;
