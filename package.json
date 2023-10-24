@@ -19,7 +19,7 @@
     }
   },
   "scripts": {
-    "example": "node example/tuporobot.js",
+    "example": "node --env-file .env ./example/tuporobot.js",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",

@@ -1,22 +1,36 @@
 import {createNodeBot} from '../index.es.js';
-
-console.log(process.env.TUPOROBOT_TOKEN)
+import process from 'process';
 
 const bot = createNodeBot(process.env.TUPOROBOT_TOKEN);
-// 227295372
-const start = bot.sendMessage({
-  chat_id: 227295372,
+
+bot.sendMessage({
+  chat_id: process.env.HEADMAD_ID,
   text: 'START SCRIPT'
 });
 
-console.log(start)
-
 bot.on('message', (ctx) => {
   ctx.sendMessage({
-
     text: ctx.message.text
   });
 });
+
+// process.on('SIGHUP', () => {
+//   bot.sendMessage({
+//     chat_id: process.env.HEADMAD_ID,
+//     text: 'END SCRIPT'
+//   });
+//   console.log('SIGHUP PROCESS')
+//   process.exit();
+// });
+
+// process.on('SIGINT', () => {
+//   bot.sendMessage({
+//     chat_id: process.env.HEADMAD_ID,
+//     text: 'END SCRIPT'
+//   });
+//   console.log('SIGINT PROCESS')
+//   process.exit();
+// });
 
 let offset = 0;
 while (true) {
