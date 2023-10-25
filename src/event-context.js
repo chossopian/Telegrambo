@@ -1,6 +1,8 @@
 import EventContextPayload from './event-context-payload.js';
 import { EventContextError } from './errors.js';
 
+export default EventContext;
+
 /**
  * Creates an instance of EventContext.
  *
@@ -52,5 +54,3 @@ function EventContext(requestSender, eventName, eventPayload) {
  * @param {object} payload - The payload to send with the request.
  * @return {Object} - The response from the Telegram API.
  */
-
-export default EventContext;

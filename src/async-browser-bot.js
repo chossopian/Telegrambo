@@ -1,4 +1,4 @@
-import createRequestSender from '../utils/browser-async-request-sender.js';
+import createRequestSender from '../utils/async-browser-request-sender.js';
 import BotContext from './bot-context.js';
 
 export default createBrowserBot ;
