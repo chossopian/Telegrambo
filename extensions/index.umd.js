@@ -1,4 +1,4 @@
-const onMatch = require('./on-match.js');
+const onMatch = require('./on-match/index.js');
 
 module.exports = {
   onMatch

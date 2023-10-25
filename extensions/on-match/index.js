@@ -15,9 +15,7 @@ function onMatch(bot, matchSeparator = '::') {
     const event = matchChain[0] ? matchChain[0] : null;
 
     bot.on(event, (eventContext, eventName) => {
-      //////////////// check match
       return checkMatchChein(matchChain, matchHandler)(eventContext, eventName, eventContext.update);
-      //////////////// end check match
     });
   };
 }

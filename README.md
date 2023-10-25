@@ -1,6 +1,10 @@
 # Telegrambo
 
-Telegrambo is a simple library for interacting with the [Telegram Bot API](https://core.telegram.org/bots/api#available-methods).
+Telegrambo is a simple library for interacting with the [Telegram Bot API](https://core.telegram.org/bots/api)
+
+This library is based on the telegram API, so all methods of the bot instance will be [available methods](https://core.telegram.org/bots/api#available-methods) from the telegram list.
+
+The context in the event handler also uses the available methods, while having ready-made fields in the arguments of these methods, such as *chat_id* or *message_id* and others. If necessary, you can overwrite these fields.
 
 ## Installation
 
@@ -11,7 +15,23 @@ You can install Telegrambo using npm:
 
 ## Usage
 
-<br>To use Telegrambo in your project, you can import it as a module:
+At first, create bot:
+```js
+// bot.js
+import { asyncNodeBot } from 'telegambo';
+const bot = asyncNodeBot(process.env.YOU_BOT_TOKEN);
+
+// Create echo-bot
+bot.on('message', (ctx) => {
+  ctx.sendMessage({
+    text: ctx.message.text
+  });
+});
+
+export default bot;
+```
+
+<br>Then import it as a module. For example, using bot with webhook:
 
 ```js
 import bot from './bot.js';
@@ -21,14 +41,14 @@ export default async function handler(request, response) {
   if (request.method === 'POST') {
 
     // request.body must be a object
-    const results = bot.process(request.body);
-    console.log(results);
+    const {ok, result} = await bot.setUpdate(request.body);
+    console.log(result);
 
   // Set webhook if query-string of url have 'webhook':
   // https://my-syte.com?webhook
   } else ('webhook' in request.query) {
     
-    bot.setWebhook({
+    await bot.setWebhook({
       url: 'https://my-syte.com'
     });
 
@@ -37,27 +57,43 @@ export default async function handler(request, response) {
   return response.send('Ok');
 }
 ```
-<br>And file with bot:
-
+<br>Or with long polling:
 ```js
-// bot.js
-import {createNodeBot } from 'telegambo';
-const bot = createNodeBot(process.env.YOU_BOT_TOKEN);
+import bot from './bot.js';
 
-// Create echo-bot
-bot.on('message', (ctx) => {
-  ctx.sendMessage({
-    text: ctx.message.text
-  });
-});
+(async () => {
+  let offset = 0;
+  let timeout = 60;
+
+  while (true) {
+    const {ok, result} = await bot.getUpdates({
+      offset,
+      timeout
+    });
+
+    if (!ok)
+      break;
+    
+    if (!result.length)
+      continue;
+    
+    offset = result.at(-1).update_id + 1;
+
+    for (let update of result)
+      bot.setUpdate(update);
+  }
+})();
+
 ```
+
+
 
 <br>List of events you can get from type [_Update_](https://core.telegram.org/bots/api#update) in official documentation. It can be any field except `update_id`. For example, listen event `callback_query`:
 
 ```js
 // bot.js
-import Telegrambo from 'telegambo';
-const bot = Telegrambo(process.env.YOU_BOT_TOKEN);
+import { asyncNodeBot } from 'telegambo';
+const bot = asyncNodeBot(process.env.YOU_BOT_TOKEN);
 
 // Send keyboard on command "/somedata"
 bot.on('message', (ctx) => {
@@ -89,8 +125,8 @@ bot.on('callback_query', (ctx) => {
 
 ```js
 // bot.js
-import Telegrambo from 'telegambo';
-const bot = Telegrambo(process.env.YOU_BOT_TOKEN);
+import { asyncNodeBot } from 'telegambo';
+const bot = asyncNodeBot(process.env.YOU_BOT_TOKEN);
 
 // Passed just function
 bot.on((ctx, eventName) => {
@@ -131,62 +167,15 @@ bot.onText('Hello', (ctx) => {
   });
 });
 ```
-
-## Event-filter 
-Also, you can use special filters of events:
-
-```js
-// bot.js
-import Telegrambo from 'telegambo';
-const bot = Telegrambo(process.env.YOU_BOT_TOKEN);
-
-// Create bot if 
-bot.on('message::photo', (ctx) => {
-  ctx.sendMessage({
-    text: 'Great photo!'
-  });
-});
-```
-
-<br>This handler will working in `message` event and [_Message_](https://core.telegram.org/bots/api#message) message type has field `photo`.
-This filter is very powerfull. You can check endpoints for a match or regular expression match:
-
-```js
-// Will matching for text "Hello!"
-'message::text::Hello!'
-
-// Matching regular expression for /start command in text of message 
-'message::text::/.*\\/start\\b.*/i'
-
-// Also filter can be applied to array field like 'entities'
-// then filter will maching to each element of them
-// and check is this entitie is mention (@username) 
-'message::entities::type::mention'
-```
-
-<br>If You whant change match separator from '::' to your, pass to bot `params`-object: 
-
-```js
-import Telegrambo from 'telegambo';
-
-const params = { match_separator: '--' };
-const bot = Telegrambo(process.env.YOU_BOT_TOKEN, params);
-
-bot.on('message--text--/\\/\\w+/i', (ctx, match) => {
-  ctx.sendMessage({
-    text: 'You send me command <b>${match}</b>'
-  });
-});
-```
-
 <br>
 
 ## API
-`BotContext(request)`
+
+
+`asyncNodeBot(token)`
 Creates a new BotContext object that handles events and provides a proxy to interact with the bot.
 
-`request` (Object): The request object that contains information about the bot.
-Returns: A new BotContext object.
+`token` (string): Telegram token of bot
 
 `bot.on(eventName, eventHandler)`
 Adds an event handler for the specified event name.
@@ -195,11 +184,11 @@ Adds an event handler for the specified event name.
 
 `eventHandler` (function): The function to handle the event.
 
-`bot.process(eventPayload)`
+`bot.setUpdate(update)`
 Processes the given event payload and returns an array of event handlers.
 
-`eventPayload` (Object): The payload of the event to be processed.
-Returns: An array of event handlers.
+`update` (Object): The payload of the event to be processed.
+
 
 ## License
 Telegrambo is MIT licensed.

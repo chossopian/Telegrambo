@@ -1,1 +1,1 @@
-import {default as onMatch} from './on-match.js';
+import {default as onMatch} from './on-match/index.js';
