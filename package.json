@@ -1,0 +1,44 @@
+{
+  "name": "telegambo",
+  "version": "0.9.0",
+  "description": "Telegrambo is a simple library for interacting with the Telegram Bot API",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./index.umd.js",
+  "module": "./index.es.js",
+  "exports": {
+    "*": {
+      "import": "./index.es.js",
+      "require": "./index.umd.js"
+    },
+    "extensions": {
+      "import": "./extensions/index.es.js",
+      "require": "./extensions/index.umd.js"
+    }
+  },
+  "scripts": {
+    "example": "node --env-file .env ./example/tuporobot.js",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "test": "node test/run.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HeadMad/Telegrambo.git"
+  },
+  "author": "HeadMad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HeadMad/Telegrambo/issues"
+  },
+  "homepage": "https://github.com/HeadMad/Telegrambo#readme",
+  "devDependencies": {
+    "vite": "^4.4.9"
+  },
+  "dependencies": {
+    "sync-request": "^6.1.0"
+  }
+}
