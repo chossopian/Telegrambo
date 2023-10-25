@@ -113,7 +113,7 @@ bot.on('message', (ctx) => {
 // Handle callback-query event
 bot.on('callback_query', (ctx) => {
   if (ctx.callback_query.data === 'SOME DATA') {
-    bot.sendMessage({
+    ctx.sendMessage({
       text: 'You press the button, and bot send <b>some data</b>',
       parse_mode: 'HTML'
     });
@@ -141,8 +141,7 @@ bot.on((ctx, eventName) => {
 
 ## Own methods
 
-<br>
-You can create own methods/ For example:
+<br>You can create own methods/ For example:
 
 ```js
 import bot from './bot.js';
