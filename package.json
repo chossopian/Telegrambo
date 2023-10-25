@@ -1,6 +1,6 @@
 {
-  "name": "telegambo",
-  "version": "0.9.0",
+  "name": "telegrambo",
+  "version": "0.5.1",
   "description": "Telegrambo is a simple library for interacting with the Telegram Bot API",
   "type": "module",
   "files": [
@@ -19,7 +19,6 @@
     }
   },
   "scripts": {
-    "example": "node --env-file .env ./example/tuporobot.js",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
