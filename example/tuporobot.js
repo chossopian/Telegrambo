@@ -3,54 +3,42 @@ import process from 'process';
 
 const bot = createNodeBot(process.env.TUPOROBOT_TOKEN);
 
-bot.sendMessage({
-  chat_id: process.env.HEADMAD_ID,
-  text: 'START SCRIPT'
-});
-
-bot.on('message', (ctx) => {
-  ctx.sendMessage({
-    text: ctx.message.text
+(async () => {
+  const result = await bot.sendMessage({
+    chat_id: process.env.HEADMAD_ID,
+    text: 'START SCRIPT'
   });
-});
+  
+  console.log(result)
+})();
 
-// process.on('SIGHUP', () => {
-//   bot.sendMessage({
-//     chat_id: process.env.HEADMAD_ID,
-//     text: 'END SCRIPT'
+// bot.on('message', (ctx) => {
+//   ctx.sendMessage({
+//     text: ctx.message.text
 //   });
-//   console.log('SIGHUP PROCESS')
-//   process.exit();
 // });
 
-// process.on('SIGINT', () => {
-//   bot.sendMessage({
-//     chat_id: process.env.HEADMAD_ID,
-//     text: 'END SCRIPT'
+
+
+// let offset = 0;
+// while (true) {
+  
+//   const {ok, result} = bot.getUpdates({
+//     offset,
+//     timeout: 60
 //   });
-//   console.log('SIGINT PROCESS')
-//   process.exit();
-// });
 
-let offset = 0;
-while (true) {
+//   if (!ok)
+//     break;
   
-  const {ok, result} = bot.getUpdates({
-    offset,
-    timeout: 60
-  });
-
-  if (!ok)
-    break;
+//   if (!result.length) {
+//     console.log('-----------------');
+//     continue;
+//   }
   
-  if (!result.length) {
-    console.log('-----------------');
-    continue;
-  }
+//   offset = result[result.length - 1].update_id + 1;
   
-  offset = result[result.length - 1].update_id + 1;
-  
-  for (let update of result) {
-    bot.setUpdate(update);
-  }
-}
+//   for (let update of result) {
+//     bot.setUpdate(update);
+//   }
+// }
