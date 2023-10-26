@@ -1,4 +1,4 @@
-import { request } from 'https';
+import https from 'https';
 
 export default sendPostRequest;
 
@@ -18,7 +18,7 @@ function sendPostRequest(url, body) {
   };
 
   return new Promise((resolve, reject) => {
-    const req = request(url, options, (res) => {
+    const req = https.request(url, options, (res) => {
       let responseData = '';
 
       res.on('data', (chunk) => {

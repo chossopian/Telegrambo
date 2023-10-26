@@ -6,8 +6,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        index: resolve(__dirname, 'lib/index.js'),
-        bot: resolve(__dirname, 'lib/bot.js'),
+        index: resolve(__dirname, './index.js'),
+        // es: resolve(__dirname, './index.es.js'),
+        // umd: resolve(__dirname, './index.umd.js'),
       },
       external: [...Object.keys(dependencies)],
       output: [
