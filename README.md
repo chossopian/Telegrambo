@@ -18,7 +18,7 @@ You can install Telegrambo using npm:
 At first, create bot:
 ```js
 // bot.js
-import { asyncNodeBot } from 'telegambo';
+import { asyncNodeBot } from 'telegrambo';
 const bot = asyncNodeBot(process.env.YOU_BOT_TOKEN);
 
 // Create echo-bot
@@ -92,7 +92,7 @@ import bot from './bot.js';
 
 ```js
 // bot.js
-import { asyncNodeBot } from 'telegambo';
+import { asyncNodeBot } from 'telegrambo';
 const bot = asyncNodeBot(process.env.YOU_BOT_TOKEN);
 
 // Send keyboard on command "/somedata"
@@ -125,7 +125,7 @@ bot.on('callback_query', (ctx) => {
 
 ```js
 // bot.js
-import { asyncNodeBot } from 'telegambo';
+import { asyncNodeBot } from 'telegrambo';
 const bot = asyncNodeBot(process.env.YOU_BOT_TOKEN);
 
 // Passed just function
