@@ -18,8 +18,8 @@ You can install Telegrambo using npm:
 At first, create bot:
 ```js
 // bot.js
-import { asyncNodeBot } from 'telegrambo';
-const bot = asyncNodeBot(process.env.YOU_BOT_TOKEN);
+import { nodeBotAsync } from 'telegrambo';
+const bot = nodeBotAsync(process.env.YOU_BOT_TOKEN);
 
 // Create echo-bot
 bot.on('message', (ctx) => {
@@ -92,8 +92,8 @@ import bot from './bot.js';
 
 ```js
 // bot.js
-import { asyncNodeBot } from 'telegrambo';
-const bot = asyncNodeBot(process.env.YOU_BOT_TOKEN);
+import { nodeBotAsync } from 'telegrambo';
+const bot = nodeBotAsync(process.env.YOU_BOT_TOKEN);
 
 // Send keyboard on command "/somedata"
 bot.on('message', (ctx) => {
@@ -125,8 +125,8 @@ bot.on('callback_query', (ctx) => {
 
 ```js
 // bot.js
-import { asyncNodeBot } from 'telegrambo';
-const bot = asyncNodeBot(process.env.YOU_BOT_TOKEN);
+import { nodeBotAsync } from 'telegrambo';
+const bot = nodeBotAsync(process.env.YOU_BOT_TOKEN);
 
 // Passed just function
 bot.on((ctx, eventName) => {
@@ -171,7 +171,7 @@ bot.onText('Hello', (ctx) => {
 ## API
 
 
-`asyncNodeBot(token)`
+`nodeBotAsync(token)`
 Creates a new BotContext object that handles events and provides a proxy to interact with the bot.
 
 `token` (string): Telegram token of bot

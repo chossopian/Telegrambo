@@ -1,4 +1,4 @@
-import asyncPostRequest from "./async-post-request.js";
+import asyncPostRequest from "./post-request-async.js";
 import RequestPayloadPrepare from "./request-payload-prepare.js";
 
 export default createRequestSender;

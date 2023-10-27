@@ -1,4 +1,4 @@
-import createRequestSender from '../utils/async-node-request-sender.js';
+import createRequestSender from '../utils/node-request-sender-sync.js';
 import BotContext from './bot-context.js';
 
 export default createNodeBot;
