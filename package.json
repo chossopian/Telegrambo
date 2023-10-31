@@ -16,8 +16,5 @@
   "bugs": {
     "url": "https://github.com/HeadMad/Telegrambo/issues"
   },
-  "homepage": "https://github.com/HeadMad/Telegrambo#readme",
-  "dependencies": {
-    "sync-request": "^6.1.0"
-  }
+  "homepage": "https://github.com/HeadMad/Telegrambo#readme"
 }
