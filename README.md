@@ -10,21 +10,20 @@ The context in the event handler also uses the available methods, while having r
 
 You can install Telegrambo using npm:
 
-`npm install telegrambo` or `npm install headmad/telegrambo`
-
+`npm install telegrambo`
 
 ## Usage
 
 At first, create bot:
 ```js
 // bot.js
-import { nodeBotAsync } from 'telegrambo';
-const bot = nodeBotAsync(process.env.YOU_BOT_TOKEN);
+import telegrambo from 'telegrambo';
+const bot = telegrambo(process.env.YOU_BOT_TOKEN);
 
 // Create echo-bot
-bot.on('message', (ctx) => {
-  ctx.sendMessage({
-    text: ctx.message.text
+bot.on('message', (event) => {
+  event.sendMessage({
+    text: event.message.text
   });
 });
 
@@ -58,6 +57,7 @@ export default async function handler(request, response) {
 }
 ```
 <br>Or with long polling:
+
 ```js
 import bot from './bot.js';
 
@@ -92,13 +92,13 @@ import bot from './bot.js';
 
 ```js
 // bot.js
-import { nodeBotAsync } from 'telegrambo';
-const bot = nodeBotAsync(process.env.YOU_BOT_TOKEN);
+import telegrambo from 'telegrambo';
+const bot = telegrambo(process.env.YOU_BOT_TOKEN);
 
 // Send keyboard on command "/somedata"
-bot.on('message', (ctx) => {
-  if (ctx.message.text === '/somedata') {
-    ctx.sendMessage({
+bot.on('message', (event) => {
+  if (event.message.text === '/somedata') {
+    event.sendMessage({
       text: 'Press the button and bot send some data',
       reply_markup: {
         inline_keyboard: [[{
@@ -111,9 +111,9 @@ bot.on('message', (ctx) => {
 });
 
 // Handle callback-query event
-bot.on('callback_query', (ctx) => {
-  if (ctx.callback_query.data === 'SOME DATA') {
-    ctx.sendMessage({
+bot.on('callback_query', (event) => {
+  if (event.callback_query.data === 'SOME DATA') {
+    event.sendMessage({
       text: 'You press the button, and bot send <b>some data</b>',
       parse_mode: 'HTML'
     });
@@ -125,13 +125,13 @@ bot.on('callback_query', (ctx) => {
 
 ```js
 // bot.js
-import { nodeBotAsync } from 'telegrambo';
-const bot = nodeBotAsync(process.env.YOU_BOT_TOKEN);
+import telegrambo from 'telegrambo';
+const bot = telegrambo(process.env.YOU_BOT_TOKEN);
 
 // Passed just function
-bot.on((ctx, eventName) => {
-  const name = ctx[eventName].from.first_name;
-  ctx.sendMessage({
+bot.on((event, eventName) => {
+  const name = event[eventName].from.first_name;
+  event.sendMessage({
     text:  `Hi, ${name}! The event <i>${eventName}</i> just happened`,
     parse_mode: 'HTML'
   });
@@ -149,9 +149,9 @@ import bot from './bot.js';
 // Write function for creating new method
 function createOnTextMethod(bot) {
   return (matchText, handler) => {
-    bot.on('message', (ctx) => {
-      if (ctx.message.text === matchText)
-        return handler(ctx);
+    bot.on('message', (event) => {
+      if (event.message.text === matchText)
+        return handler(event);
       });
   };
 };
@@ -160,8 +160,8 @@ function createOnTextMethod(bot) {
 bot.onText = createOnTextMethod(bot);
 
 // Run new method
-bot.onText('Hello', (ctx) => {
-  return ctx.sendMessage({
+bot.onText('Hello', (event) => {
+  return event.sendMessage({
     text: 'Hi there!'
   });
 });
