@@ -3,19 +3,21 @@ import { EventContextError } from './errors.js';
 
 export default EventContext;
 
+
 /**
- * Creates an instance of EventContext.
+ * Creates a new EventContext object.
  *
- * @param {requestSender} requestSender - Function that accepts a method and payload.
+ * @param {function} requestSender - The function used to send requests.
+ * @param {Map} eventMethods - An Map object containing event methods.
  * @param {string} eventName - The name of the event.
- * @param {Object} eventPayload - The payload of the event.
- * @return {Proxy} - A proxy object that handles access to the event payload and provides additional functionality.
+ * @param {object} eventPayload - An object containing event data.
+ * @return {object} The new EventContext object.
  */
-function EventContext(requestSender, eventName, eventPayload) {
+function EventContext(requestSender, eventMethods, eventName, eventPayload) {
   const eventData = eventPayload[eventName];
   const contextPayload = EventContextPayload(eventName, eventData);
 
-  return new Proxy(eventPayload, {
+  const eventContextResult = new Proxy(eventPayload, {
     get(target, prop) {
       if (prop in target)
         return target[prop];
@@ -33,20 +35,15 @@ function EventContext(requestSender, eventName, eventPayload) {
               ({ method, ...contextPayload, ...requestPayload })
         });
 
+      if (eventMethods.has(prop))
+        return eventMethods.get(prop)(eventContextResult, eventName);
+
       return (requestPayload = {}) => requestSender(prop, { ...contextPayload, ...requestPayload });
     },
-    set(target, prop, value) {
-      if (prop in target)
-        throw new EventContextError(`Can't rewrite method "${prop}" in event context`);
-
-      if (typeof value !== 'function')
-        throw new EventContextError(`New method "${prop}" must be a function`);
-
-      target[prop] = value;
-      return true;
-    }
   });
-};
+
+  return eventContextResult;
+}
 
 /**
  * @callback requestSender - Synchronous function that accepts a method and payload.

@@ -141,7 +141,7 @@ bot.on((event, eventName) => {
 
 ## Own methods
 
-<br>You can create own methods/ For example:
+<br>You can create own methods for bot. For example:
 
 ```js
 import bot from './bot.js';
@@ -157,7 +157,7 @@ function createOnTextMethod(bot) {
 };
 
 // Initialize new method onText
-bot.onText = createOnTextMethod(bot);
+bot.onText = createOnTextMethod;
 
 // Run new method
 bot.onText('Hello', (event) => {
@@ -167,6 +167,31 @@ bot.onText('Hello', (event) => {
 });
 ```
 <br>
+
+Also you can add new methods for event context. Like this:
+
+```js
+import bot from './bot.js';
+
+// Write method for send log from object to user:
+function createEventLog(event, eventName) {
+  return (object) => {
+    event.sendMessage({
+      text: `<pre>${JSON.stringify(object, null, ' ')}</pre>`,
+      parse_mode: 'HTML'
+    });
+  };
+};
+
+// Initialize new method
+bot.event.log = createEventLog;
+
+// And use in event handler
+bot.on('message', (event) => {
+  return event.log(event.message)
+});
+
+```
 
 ## API
 

@@ -12,7 +12,7 @@ function createOnTextMethod(bot) {
 };
 
 // Initialize new method onText
-bot.onText = createOnTextMethod(bot);
+bot.onText = createOnTextMethod;
 
 // Run new method
 bot.onText('Hello!', (ctx) => {
@@ -21,4 +21,4 @@ bot.onText('Hello!', (ctx) => {
   });
 });
 
-console.log(bot.setUpadte(update));
+console.log(bot.setUpdate(update));

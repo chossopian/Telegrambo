@@ -1,5 +1,5 @@
 import EventContext from './event-context.js';
-import { BotContextError } from './errors.js';
+import { BotContextError, EventContextError } from './errors.js';
 
 export default BotContext;
 
@@ -13,7 +13,21 @@ export default BotContext;
  */
 function BotContext(requestSender) {
   const EVENTS = new Map();
+  const EVENT_CONTEXT_METHODS = new Map();
   const self = {};
+
+  self.event = new Proxy(EVENT_CONTEXT_METHODS, {
+    set(target, prop, value) {
+      if (prop in target)
+        throw new EventContextError(`Can't rewrite method "${prop}"`);
+
+      if (typeof value !== 'function')
+        throw new EventContextError(`New method "${prop}" must be a function`);
+
+        target.set(prop, value);
+        return true;
+    }
+  });
 
   /**
    * Attaches an event handler for a specific event or event match.
@@ -26,11 +40,11 @@ function BotContext(requestSender) {
       eventHandler = eventName;
       eventName = null;
     }
-
+    
     if (EVENTS.has(eventName))
-      EVENTS.get(eventName).push(eventHandler);
-    else
-      EVENTS.set(eventName, [eventHandler]);
+    EVENTS.get(eventName).push(eventHandler);
+  else
+  EVENTS.set(eventName, [eventHandler]);
   };
 
   /**
@@ -60,7 +74,7 @@ function BotContext(requestSender) {
   function runEventHandlers(trigger, eventName, eventPayload) {
     const result = [];
     if (EVENTS.has(trigger)) {
-      const eventContext = EventContext(requestSender, eventName, eventPayload);
+      const eventContext = EventContext(requestSender, EVENT_CONTEXT_METHODS, eventName, eventPayload);
       for (let handler of EVENTS.get(trigger))
         result.push(handler(eventContext, eventName));
     }
@@ -69,13 +83,9 @@ function BotContext(requestSender) {
   }
 
 
-  return new Proxy(self, {
-    get(target, prop) {
-      if (prop in target)
-        return target[prop];
-
-      return (requestPayload = {}) => requestSender(prop, requestPayload);
-    },
+  const botContextResult = new Proxy(self, {
+    get: (target, prop) => target[prop]
+      ?? ((requestPayload = {}) => requestSender(prop, requestPayload)),
 
     set(target, prop, value) {
       if (prop in target)
@@ -84,10 +94,12 @@ function BotContext(requestSender) {
       if (typeof value !== 'function')
         throw new BotContextError(`New method "${prop}" must be a function`);
 
-      target[prop] = value;
+      target[prop] = value(botContextResult);
       return true;
     },
   });
+
+  return botContextResult;
 }
 
 /**

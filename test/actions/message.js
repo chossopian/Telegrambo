@@ -8,3 +8,5 @@ bot.on('message', (ctx) => {
     text: ctx.message.text
   })
 });
+
+console.log(bot.setUpdate(update));
