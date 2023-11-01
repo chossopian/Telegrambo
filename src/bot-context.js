@@ -1,4 +1,5 @@
 import EventContext from './event-context.js';
+import createHandlerStorage from '../utils/create-handler-storage.js';
 import { BotContextError, EventContextError } from './errors.js';
 
 export default BotContext;
@@ -12,9 +13,10 @@ export default BotContext;
  * @return {object} The BotContext object.
  */
 function BotContext(requestSender) {
-  const EVENTS = new Map();
+  const EVENTS = createHandlerStorage();
   const EVENT_CONTEXT_METHODS = new Map();
   const self = {};
+
 
   self.event = new Proxy(EVENT_CONTEXT_METHODS, {
     set(target, prop, value) {
@@ -40,11 +42,7 @@ function BotContext(requestSender) {
       eventHandler = eventName;
       eventName = null;
     }
-    
-    if (EVENTS.has(eventName))
-    EVENTS.get(eventName).push(eventHandler);
-  else
-  EVENTS.set(eventName, [eventHandler]);
+    EVENTS.add(eventName, eventHandler);
   };
 
   /**
