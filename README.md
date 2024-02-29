@@ -1,13 +1,13 @@
 # Telegrambo
 
-Telegrambo is a simple library for interacting with the [Telegram Bot API](https://core.telegram.org/bots/api)
-
 # https://tea.xyz/what-is-this-file
 ---
 version: 1.0.0
 codeOwners:
   - '0x90e8BF3569A56F62b3E5E0e6FA53Ef3dfE03809b'
 quorum: 1
+
+Telegrambo is a simple library for interacting with the [Telegram Bot API](https://core.telegram.org/bots/api)
 
 This library is based on the telegram API, so all methods of the bot instance will be [available methods](https://core.telegram.org/bots/api#available-methods) from the telegram list.
 
